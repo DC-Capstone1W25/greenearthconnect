@@ -19,7 +19,7 @@ export default function MapScreen() {
         <Col>
           <Card>
             <Card.Body>
-              {/* Replace this div with your interactive map component */}
+              {/* Replace this div with interactive map component */}
               <div
                 style={{
                   height: '500px',
