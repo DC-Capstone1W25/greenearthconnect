@@ -1,52 +1,65 @@
+// frontend/src/App.js
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; //
-import { 
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import {
   ApolloProvider,
   ApolloClient,
   InMemoryCache,
   HttpLink,
   from,
-} from '@apollo/client'; //
-import { onError } from '@apollo/client/link/error'; //
-import NavBar from './components/Navbar'; //
-import Header from './components/Header'; //
-import Footer from './components/Footer'; //
-import DashboardScreen from './screens/DashboardScreen'; //
-import MapScreen from './screens/MapScreen'; //
-import NewsfeedScreen from './screens/NewsfeedScreen'; //
-import NotFound from './components/NotFound'; //
+} from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import { setContext } from '@apollo/client/link/context';
+
+import NavBar from './components/Navbar';
+import Footer from './components/Footer';
+import DashboardScreen from './screens/DashboardScreen';
+import MapScreen from './screens/MapScreen';
+import NewsfeedScreen from './screens/NewsfeedScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import NotFound from './components/NotFound';
 import { Container } from 'react-bootstrap';
 
-const port = process.env.PORT || 5000; //
+// -------------- NEW (Login Screen) --------------
+import LoginScreen from './screens/LoginScreen'; 
+// Make sure you create a LoginScreen component to handle the login form.
 
+const port = process.env.PORT || 5000;
+
+// Handle GraphQL & network errors
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.map(({ message }) => {
-      console.log(message);
-      return message;
+    graphQLErrors.forEach(({ message }) => {
+      console.error('[GraphQL error]', message);
     });
   }
-}
-);
-
-const cache = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: from([
-    errorLink,
-    new HttpLink({
-      uri: `http://localhost:${port}/graphql`,
-    }),
-  ]),
+  if (networkError) {
+    console.error('[Network error]', networkError);
+  }
 });
 
+// -------------- NEW (Auth Link) --------------
+// This link reads the token from localStorage and sets the "Authorization" header.
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('token'); 
+  return {
+    headers: {
+      ...headers,
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
+// Base GraphQL endpoint
+const httpLink = new HttpLink({
+  uri: `http://localhost:${port}/graphql`,
+});
+
+// Create a single Apollo Client instance
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: from([
-    errorLink,
-    new HttpLink({
-      uri: `http://localhost:${port}/graphql`,
-    }),
-  ]),
+  link: from([errorLink, authLink, httpLink]),
 });
 
 function App() {
@@ -54,20 +67,24 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <div className="app-wrapper">
-        <NavBar />
-        <main className="py-3">
-        <Container>
+          <NavBar />
+          <main className="py-3">
+            <Container>
+              <Routes>
+                <Route path="/" element={<DashboardScreen />} />
+                <Route path="/dashboard" element={<DashboardScreen />} />
+                <Route path="/map" element={<MapScreen />} />
+                <Route path="/newsfeed" element={<NewsfeedScreen />} />
 
-          <Routes>
-            <Route path="/" element={<DashboardScreen />} />
-            <Route path="/map" element={<MapScreen />} />
-            <Route path="/newsfeed" element={<NewsfeedScreen />} />
-            <Route path='*' element={<NotFound />} />
-          </Routes>
-          
-        </Container>
-        </main>
-        <Footer />
+                <Route path="/register" element={<RegisterScreen />} />
+                <Route path="/login" element={<LoginScreen />} />
+
+                {/* Catch-all for 404 */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Container>
+          </main>
+          <Footer />
         </div>
       </Router>
     </ApolloProvider>
