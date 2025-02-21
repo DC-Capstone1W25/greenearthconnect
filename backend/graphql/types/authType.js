@@ -1,3 +1,4 @@
+// backend\graphql\types\authType.js
 import { GraphQLObjectType, GraphQLString } from 'graphql';
 import UserType from './userType.js';
 

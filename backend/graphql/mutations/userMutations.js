@@ -1,3 +1,4 @@
+// backend\graphql\mutations\userMutations.js
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';

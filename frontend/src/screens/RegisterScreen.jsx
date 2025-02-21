@@ -1,3 +1,4 @@
+// frontend\src\screens\RegisterScreen.jsx
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
@@ -31,7 +32,7 @@ function RegisterScreen() {
       });
       // Store the token
       localStorage.setItem('token', data.registerUser.token);
-      // Redirect to the dashboard (or wherever you want)
+      // Redirect to the dashboard
       navigate('/dashboard');
     } catch (err) {
       console.error('Registration error:', err);

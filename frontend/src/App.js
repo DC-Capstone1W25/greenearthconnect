@@ -20,10 +20,8 @@ import NewsfeedScreen from './screens/NewsfeedScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import NotFound from './components/NotFound';
 import { Container } from 'react-bootstrap';
-
-// -------------- NEW (Login Screen) --------------
 import LoginScreen from './screens/LoginScreen'; 
-// Make sure you create a LoginScreen component to handle the login form.
+import Chatbot from './components/Chatbot';
 
 const port = process.env.PORT || 5000;
 
@@ -39,7 +37,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 });
 
-// -------------- NEW (Auth Link) --------------
 // This link reads the token from localStorage and sets the "Authorization" header.
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token'); 
@@ -78,6 +75,8 @@ function App() {
 
                 <Route path="/register" element={<RegisterScreen />} />
                 <Route path="/login" element={<LoginScreen />} />
+
+                <Route path="/chat" element={<Chatbot />} />
 
                 {/* Catch-all for 404 */}
                 <Route path="*" element={<NotFound />} />

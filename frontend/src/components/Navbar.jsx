@@ -1,10 +1,11 @@
+// frontend\src\components\Navbar.jsx
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/greeneartdconn.jpg';
 
 export default function CustomNavbar() {
-  // Use useLocation to trigger re-renders on route changes
+  // useLocation to trigger re-renders on route changes
   const location = useLocation();
   const [token, setToken] = useState(localStorage.getItem('token'));
 

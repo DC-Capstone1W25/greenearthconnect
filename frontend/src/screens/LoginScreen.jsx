@@ -1,7 +1,8 @@
+// frontend\src\screens\LoginScreen.jsx
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
-import { LOGIN_USER } from '../graphql/mutations'; // adjust path as needed
+import { LOGIN_USER } from '../graphql/mutations'; 
 import { Link, useNavigate } from 'react-router-dom';
 
 function LoginScreen() {

@@ -1,3 +1,4 @@
+// frontend\src\components\NotFound.jsx
 import { FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 

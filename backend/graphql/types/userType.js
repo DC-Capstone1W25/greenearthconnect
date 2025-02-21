@@ -1,4 +1,4 @@
-// userType.js
+// backend\graphql\types\userType.js
 import { GraphQLObjectType, GraphQLID, GraphQLString } from 'graphql';
 
 const UserType = new GraphQLObjectType({

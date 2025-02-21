@@ -8,8 +8,12 @@ import jwt from 'jsonwebtoken';
 import colors from 'colors';
 import schema from './graphql/index.js';
 import connectDB from './config/db.js';
+import chatRoutes from './routes/chatRoutes.js'; 
 
 const app = express();
+
+// Middleware to parse JSON bodies
+app.use(express.json());
 app.use(cors());
 
 // Connect to MongoDB
@@ -44,11 +48,14 @@ app.use(
   })
 );
 
+// Mount the chatbot REST endpoint at /api/chat
+app.use('/api/chat', chatRoutes);
+
 app.get('/', (req, res) => {
-  res.send('API is running with GraphQL + JWT...');
+  res.send('API is running with GraphQL + JWT and Chatbot!');
 });
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on port ${port}`.green.bold);
 });

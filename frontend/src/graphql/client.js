@@ -2,9 +2,9 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-// 1. Define the GraphQL endpoint (your backend)
+// 1. Define the GraphQL endpoint 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:5000/graphql', // Adjust if needed
+  uri: 'http://localhost:5000/graphql',
 });
 
 // 2. Middleware to attach the JWT token in headers
