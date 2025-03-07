@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/agila/Documents/AIDI1003/GreenEarthConnect/greenearthconnect/mlruns/0/ba0a8079e4064c74aabbe7fd6169abea/artifacts
+end_time: 1741364064143
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: ba0a8079e4064c74aabbe7fd6169abea
+run_name: abundant-boar-724
+run_uuid: ba0a8079e4064c74aabbe7fd6169abea
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1741364042936
+status: 3
+tags: []
+user_id: agila
