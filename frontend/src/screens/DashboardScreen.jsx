@@ -1,4 +1,4 @@
-// frontend\src\screens\DashboardScreen.jsx
+// frontend/src/screens/DashboardScreen.jsx
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 
@@ -8,8 +8,8 @@ export default function DashboardScreen() {
       {/* Header Section */}
       <Row>
         <Col>
-          <h1 className="text-center">Dashboard</h1>
-          <p className="text-center text-muted">
+          <h1 className="screen-title text-center">Dashboard</h1>
+          <p className="screen-subtitle text-center text-muted">
             Welcome to your personal dashboard!
           </p>
         </Col>

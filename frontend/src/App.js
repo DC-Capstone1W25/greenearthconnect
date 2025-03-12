@@ -21,6 +21,7 @@ import RegisterScreen from './screens/RegisterScreen';
 import NotFound from './components/NotFound';
 import { Container } from 'react-bootstrap';
 import LoginScreen from './screens/LoginScreen'; 
+import ProfileScreen from './screens/ProfileScreen';
 import Chatbot from './components/Chatbot';
 
 const port = process.env.PORT || 5000;
@@ -75,6 +76,7 @@ function App() {
 
                 <Route path="/register" element={<RegisterScreen />} />
                 <Route path="/login" element={<LoginScreen />} />
+                <Route path="/profile" element={<ProfileScreen />} />
 
                 <Route path="/chat" element={<Chatbot />} />
 
