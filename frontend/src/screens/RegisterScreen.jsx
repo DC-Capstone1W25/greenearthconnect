@@ -32,12 +32,15 @@ function RegisterScreen() {
       });
       // Store the token
       localStorage.setItem('token', data.registerUser.token);
+      localStorage.setItem('userId', data.loginUser.user._id);
+      localStorage.setItem('username', data.registerUser.user.username);
       // Redirect to the dashboard
       navigate('/dashboard');
     } catch (err) {
       console.error('Registration error:', err);
     }
   };
+  
 
   return (
     <Container className="mt-5">

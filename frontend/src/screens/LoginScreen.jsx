@@ -15,23 +15,26 @@ function LoginScreen() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await loginUser({
-        variables: {
-          email: formData.email,
-          password: formData.password,
-        },
-      });
-      // Store token in localStorage
-      localStorage.setItem('token', data.loginUser.token);
-      // Redirect to dashboard (or any protected route)
-      navigate('/dashboard');
-    } catch (err) {
-      console.error('Login error:', err);
-    }
-  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const { data } = await loginUser({
+      variables: {
+        email: formData.email,
+        password: formData.password,
+      },
+    });
+    // Store token in localStorage
+    localStorage.setItem('token', data.loginUser.token);
+    localStorage.setItem('userId', data.loginUser.user._id);
+    localStorage.setItem('username', data.loginUser.user.username);
+    // Redirect to dashboard (or any protected route)
+    navigate('/dashboard');
+  } catch (err) {
+    console.error('Login error:', err);
+  }
+};
+
 
   return (
     <Container className="mt-5">
