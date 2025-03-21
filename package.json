@@ -1,0 +1,33 @@
+{
+  "name": "greenearthconnect",
+  "private": true,
+  "version": "1.0.0",
+  "description": "GreenEarth Connect full-stack monorepo",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "start:frontend": "npm --prefix frontend start",
+    "start:backend": "npm --prefix backend start",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "npm --prefix backend run build",
+    "build": "npm run build:frontend && npm run build:backend",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DC-Capstone1W25/greenearthconnect.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DC-Capstone1W25/greenearthconnect/issues"
+  },
+  "homepage": "https://github.com/DC-Capstone1W25/greenearthconnect#readme",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
