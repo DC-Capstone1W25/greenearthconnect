@@ -1,14 +1,26 @@
 // frontend/src/components/Chatbot.jsx
 import React, { useState, useRef, useEffect } from 'react';
-import { Container, Row, Col, Card, Form, Button, Spinner } from 'react-bootstrap';
+import { Card, Form, Button, Spinner } from 'react-bootstrap';
+import axios from 'axios';
 
-function Chatbot() {
+function Chatbot({ aqiTrendData }) {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  // Track dark mode state based on document.body's classes
+  const [darkMode, setDarkMode] = useState(document.body.classList.contains('dark-mode'));
   const messagesEndRef = useRef(null);
 
-  // Scroll to the bottom whenever messages change
+  // Monitor changes to document.body's class list to update darkMode state
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      setDarkMode(document.body.classList.contains('dark-mode'));
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
+
+  // Auto-scroll to the bottom when messages update
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -19,7 +31,7 @@ function Chatbot() {
     const trimmedMessage = inputMessage.trim();
     if (!trimmedMessage) return;
 
-    // Append user's message
+    // Append user's message to the conversation log
     setMessages(prev => [
       ...prev,
       { sender: 'user', text: trimmedMessage, timestamp: new Date() }
@@ -27,17 +39,11 @@ function Chatbot() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: trimmedMessage }),
-      });
-      const data = await response.json();
-
-      // Append bot's reply
+      const response = await axios.post('http://localhost:5000/api/chat', { message: trimmedMessage });
+      const reply = response.data.reply;
       setMessages(prev => [
         ...prev,
-        { sender: 'bot', text: data.reply, timestamp: new Date() }
+        { sender: 'bot', text: reply, timestamp: new Date() }
       ]);
     } catch (err) {
       console.error(err);
@@ -53,21 +59,32 @@ function Chatbot() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!loading) {
-      sendMessage();
-    }
+    if (!loading) sendMessage();
   };
 
+  // Render message bubbles with conditional dark mode styling
   const renderMessage = (msg, idx) => {
     const isUser = msg.sender === 'user';
     return (
       <div
         key={idx}
-        className={`d-flex my-2 ${isUser ? 'justify-content-end' : 'justify-content-start'}`}
+        style={{
+          display: 'flex',
+          justifyContent: isUser ? 'flex-end' : 'flex-start',
+          marginBottom: '10px'
+        }}
       >
         <div
-          className={`p-2 rounded ${isUser ? 'bg-primary text-white' : 'bg-light text-dark'}`}
-          style={{ maxWidth: '75%', wordBreak: 'break-word' }}
+          style={{
+            backgroundColor: isUser
+              ? (darkMode ? '#3d79f5' : '#007bff')
+              : (darkMode ? '#495057' : '#f1f0f0'),
+            color: '#fff',
+            padding: '10px 15px',
+            borderRadius: '20px',
+            maxWidth: '70%',
+            boxShadow: '0px 2px 8px rgba(0,0,0,0.2)'
+          }}
         >
           {msg.text}
         </div>
@@ -75,38 +92,44 @@ function Chatbot() {
     );
   };
 
+  // Define colors based on dark mode for the card components
+  const cardBg = darkMode ? 'dark' : 'light';
+  const cardText = darkMode ? 'light' : 'dark';
+  const cardBodyBg = darkMode ? '#343a40' : '#f8f9fa';
+  const inputBg = darkMode ? '#495057' : '#fff';
+  const inputColor = darkMode ? '#fff' : '#000';
+
   return (
-    <Container className="mt-4">
-      <Row className="justify-content-center">
-        <Col md={8}>
-          <Card>
-            <Card.Header className="bg-secondary text-white">Chatbot</Card.Header>
-            <Card.Body style={{ height: '400px', overflowY: 'auto', backgroundColor: '#f8f9fa' }}>
-              {messages.map(renderMessage)}
-              {loading && (
-                <div className="d-flex justify-content-center my-2">
-                  <Spinner animation="border" size="sm" variant="primary" />
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </Card.Body>
-            <Card.Footer>
-              <Form onSubmit={handleSubmit} className="d-flex">
-                <Form.Control
-                  type="text"
-                  placeholder="Type your message..."
-                  value={inputMessage}
-                  onChange={(e) => setInputMessage(e.target.value)}
-                />
-                <Button variant="primary" type="submit" className="ms-2" disabled={loading}>
-                  {loading ? 'Sending...' : 'Send'}
-                </Button>
-              </Form>
-            </Card.Footer>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <Card bg={cardBg} text={cardText}>
+      <Card.Header className={`bg-${cardBg} border-0`}>Chatbot</Card.Header>
+      <Card.Body style={{ height: '400px', overflowY: 'auto', backgroundColor: cardBodyBg }}>
+        {messages.map(renderMessage)}
+        {loading && (
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+            <Spinner animation="border" size="sm" variant={darkMode ? 'light' : 'primary'} />
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </Card.Body>
+      <Card.Footer className={`bg-${cardBg} border-0`}>
+        <Form onSubmit={handleSubmit} className="d-flex">
+          <Form.Control
+            type="text"
+            placeholder="Type your message..."
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            style={{
+              backgroundColor: inputBg,
+              border: 'none',
+              color: inputColor
+            }}
+          />
+          <Button variant="primary" type="submit" className="ms-2" disabled={loading}>
+            {loading ? 'Sending...' : 'Send'}
+          </Button>
+        </Form>
+      </Card.Footer>
+    </Card>
   );
 }
 

@@ -1,3 +1,4 @@
+/* frontend\src\index.css  */
 /* Base Styles */
 html,
 body,
@@ -273,5 +274,51 @@ body.dark-mode .dropdown-divider {
 html.dark-mode footer,
 body.dark-mode footer {
   background-color: var(--dark-bg) !important;
+  color: var(--dark-text) !important;
+}
+
+/* Floating Chat Bubble Button */
+.floating-chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  padding: 0;
+  font-size: 16px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden; /* Ensures content doesn't spill out */
+}
+
+
+/* Dark Mode Modal Styling */
+.modal-dark .modal-content {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text) !important;
+}
+.modal-dark-header {
+  background-color: var(--dark-navbar-bg) !important;
+  color: var(--dark-text) !important;
+}
+.modal-dark-body {
+  background-color: var(--dark-bg) !important;
+  color: var(--dark-text) !important;
+}
+
+.trend-chart-container {
+  height: 300px;
+}
+
+.welcome-message {
+  font-size: 1.25rem;
+  color: var(--light-text);
+  transition: color var(--transition-speed) ease;
+}
+
+/* When dark mode is active, update the welcome message style */
+html.dark-mode .welcome-message,
+body.dark-mode .welcome-message {
   color: var(--dark-text) !important;
 }

@@ -8,7 +8,8 @@ import jwt from 'jsonwebtoken';
 import colors from 'colors';
 import schema from './graphql/index.js';
 import connectDB from './config/db.js';
-import chatRoutes from './routes/chatRoutes.js'; 
+import chatRoutes from './routes/chatRoutes.js';
+import aqiRoutes from './routes/aqi.js'; // Import the AQI route
 
 const app = express();
 
@@ -51,8 +52,11 @@ app.use(
 // Mount the chatbot REST endpoint at /api/chat
 app.use('/api/chat', chatRoutes);
 
+// Mount the AQI prediction endpoint at /api/aqi
+app.use('/api/aqi', aqiRoutes);
+
 app.get('/', (req, res) => {
-  res.send('API is running with GraphQL + JWT and Chatbot!');
+  res.send('API is running with GraphQL + JWT, Chatbot, and AQI Prediction!');
 });
 
 const port = process.env.PORT || 5000;
