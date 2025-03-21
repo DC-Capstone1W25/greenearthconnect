@@ -1,7 +1,6 @@
-// frontend/src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
+// frontend\src\App.js
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {
   ApolloProvider,
   ApolloClient,
@@ -19,10 +18,11 @@ import MapScreen from './screens/MapScreen';
 import NewsfeedScreen from './screens/NewsfeedScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import NotFound from './components/NotFound';
-import { Container } from 'react-bootstrap';
-import LoginScreen from './screens/LoginScreen'; 
+import { Container, Button, Modal } from 'react-bootstrap';
+import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import Chatbot from './components/Chatbot';
+import './index.css';
 
 const port = process.env.PORT || 5000;
 
@@ -38,9 +38,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 });
 
-// This link reads the token from localStorage and sets the "Authorization" header.
+// Set the "Authorization" header using token from localStorage
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('token'); 
+  const token = localStorage.getItem('token');
   return {
     headers: {
       ...headers,
@@ -61,6 +61,9 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const [showChatModal, setShowChatModal] = useState(false);
+  const toggleChatModal = () => setShowChatModal((prev) => !prev);
+
   return (
     <ApolloProvider client={client}>
       <Router>
@@ -73,19 +76,39 @@ function App() {
                 <Route path="/dashboard" element={<DashboardScreen />} />
                 <Route path="/map" element={<MapScreen />} />
                 <Route path="/newsfeed" element={<NewsfeedScreen />} />
-
                 <Route path="/register" element={<RegisterScreen />} />
                 <Route path="/login" element={<LoginScreen />} />
                 <Route path="/profile" element={<ProfileScreen />} />
-
-                <Route path="/chat" element={<Chatbot />} />
-
                 {/* Catch-all for 404 */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Container>
           </main>
           <Footer />
+
+          {/* Floating Chat Bubble Button */}
+          <Button
+            variant="primary"
+            onClick={toggleChatModal}
+            className="floating-chat-button"
+          >
+            Chat
+          </Button>
+
+          {/* Chatbot Modal */}
+          <Modal
+            show={showChatModal}
+            onHide={toggleChatModal}
+            centered
+            className={document.body.classList.contains("dark-mode") ? "modal-dark" : ""}
+          >
+            <Modal.Header closeButton className={document.body.classList.contains("dark-mode") ? "modal-dark-header" : ""}>
+              <Modal.Title>Greenearth Connect Chatbot</Modal.Title>
+            </Modal.Header>
+            <Modal.Body className={document.body.classList.contains("dark-mode") ? "modal-dark-body" : ""}>
+              <Chatbot />
+            </Modal.Body>
+          </Modal>
         </div>
       </Router>
     </ApolloProvider>
