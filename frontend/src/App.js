@@ -51,8 +51,9 @@ const authLink = setContext((_, { headers }) => {
 
 // Base GraphQL endpoint
 const httpLink = new HttpLink({
-  uri: `http://localhost:${port}/graphql`,
+  uri: process.env.REACT_APP_GRAPHQL_URI || `http://localhost:${port}/graphql`,
 });
+
 
 // Create a single Apollo Client instance
 const client = new ApolloClient({

@@ -29,5 +29,8 @@
   "homepage": "https://github.com/DC-Capstone1W25/greenearthconnect#readme",
   "devDependencies": {
     "concurrently": "^7.6.0"
+  },
+  "dependencies": {
+    "greenearthconnect": "file:"
   }
 }
