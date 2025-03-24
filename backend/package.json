@@ -9,15 +9,16 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "dotenv": "^16.0.3",
+    "backend": "file:",
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
     "express-graphql": "^0.12.0",
     "graphql": "^15.8.0",
     "jsonwebtoken": "^9.0.0",
-    "colors": "^1.4.0",
-    "mongoose": "^7.0.0",
-    "bcryptjs": "^2.4.3"
+    "mongoose": "^7.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
