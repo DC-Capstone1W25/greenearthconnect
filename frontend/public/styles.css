@@ -1,0 +1,67 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  #overview {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1 {
+    color: #0073e6;
+    text-align: center;
+  }
+  
+  p {
+    line-height: 1.6;
+    text-align: justify;
+  }
+  
+  /* AQI Display Styles */
+  .aqi-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #e0f7fa;
+    border-radius: 8px;
+  }
+  
+  .aqi-box {
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    width: 100px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .aqi-box.good {
+    background-color: #a8e6cf;
+  }
+  
+  .aqi-box.moderate {
+    background-color: #ffd54f;
+  }
+  
+  .aqi-box.unhealthy {
+    background-color: #ff8a80;
+  }
+  
+  .aqi-value {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .aqi-label {
+    font-size: 14px;
+    color: #555;
+  }

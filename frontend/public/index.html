@@ -5,10 +5,7 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta name="description" content="Web site created using create-react-app" />
 
     <!-- Open Graph meta tags for better social sharing -->
     <meta property="og:title" content="React App" />
@@ -17,36 +14,42 @@
     <meta property="og:url" content="https://yourwebsite.com" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
 
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="%PUBLIC_URL%/styles.css" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Air Quality Predictor</title>
   </head>
   <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
 
-  <!-- Overview -->
-  <div id="overview">
-    <h1>Welcome to the Air Quality Predictor</h1>
-    <p>Our web app is designed to provide accurate predictions of air quality, helping you stay informed about the air you breathe.
-      By leveraging advanced algorithms and real-time data, we offer insights into current and future air pollution levels.
-      Whether you're planning your day or concerned about health impacts, our app equips you with the information you need.
-      Explore interactive maps, detailed forecasts, and personalized alerts to make informed decisions.
-      Join us in our mission to promote cleaner air and healthier living environments.
+    <!-- Overview -->
+    <div id="overview">
+      <h1>Welcome to the Air Quality Predictor</h1>
+      <p>
+        Our web app is designed to provide accurate predictions of air quality, helping you stay informed about the air you breathe.
+        By leveraging advanced algorithms and real-time data, we offer insights into current and future air pollution levels.
+        Whether you're planning your day or concerned about health impacts, our app equips you with the information you need.
+        Explore interactive maps, detailed forecasts, and personalized alerts to make informed decisions.
+        Join us in our mission to promote cleaner air and healthier living environments.
+      </p>
 
-    </p>
-  </div>
+      <!-- AQI Display -->
+      <div class="aqi-container">
+        <div class="aqi-box good">
+          <div class="aqi-value">50</div>
+          <div class="aqi-label">Good</div>
+        </div>
+        <div class="aqi-box moderate">
+          <div class="aqi-value">100</div>
+          <div class="aqi-label">Moderate</div>
+        </div>
+        <div class="aqi-box unhealthy">
+          <div class="aqi-value">150</div>
+          <div class="aqi-label">Unhealthy</div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
