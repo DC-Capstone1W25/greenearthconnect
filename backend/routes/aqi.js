@@ -11,6 +11,8 @@ const __dirname = path.dirname(__filename);
 const router = express.Router();
 
 router.get('/predict', async (req, res) => {
+ // console.log('Query parameters:', req.query);
+
   const { temperature, humidity, wind_speed, precipitation } = req.query;
 
   if (!temperature || !humidity || !wind_speed || !precipitation) {

@@ -6,10 +6,16 @@ import cors from 'cors';
 import { graphqlHTTP } from 'express-graphql';
 import jwt from 'jsonwebtoken';
 import colors from 'colors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import schema from './graphql/index.js';
 import connectDB from './config/db.js';
 import chatRoutes from './routes/chatRoutes.js';
 import aqiRoutes from './routes/aqi.js'; // Import the AQI route
+
+// Workaround to obtain __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -55,12 +61,15 @@ app.use('/api/chat', chatRoutes);
 // Mount the AQI prediction endpoint at /api/aqi
 app.use('/api/aqi', aqiRoutes);
 
-app.get('/', (req, res) => {
-  res.send('API is running with GraphQL + JWT, Chatbot, and AQI Prediction!');
+// Serve static files from the frontend build folder
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
+
+// Catch-all route to serve index.html for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));
 });
 
 const port = process.env.PORT || 5000;
 app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on port ${port}`.green.bold);
 });
-
