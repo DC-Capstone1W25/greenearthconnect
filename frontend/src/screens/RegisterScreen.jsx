@@ -1,6 +1,6 @@
 // frontend\src\screens\RegisterScreen.jsx
 import React, { useState } from 'react';
-import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import { REGISTER_USER } from '../graphql/mutations';
 import { useNavigate, Link } from 'react-router-dom';
@@ -12,35 +12,40 @@ function RegisterScreen() {
     email: '',
     password: '',
   });
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const [registerUser, { loading, error }] = useMutation(REGISTER_USER);
+  const [registerUser, { loading }] = useMutation(REGISTER_USER, {
+    onError: (error) => {
+      setErrorMsg(error.message);
+    },
+    onCompleted: (data) => {
+      // Assuming the mutation returns { registerUser: { token, user: { _id, username } } }
+      if (data && data.registerUser) {
+        localStorage.setItem('token', data.registerUser.token);
+        localStorage.setItem('userId', data.registerUser.user._id);
+        localStorage.setItem('username', data.registerUser.user.username);
+        setErrorMsg('');
+        navigate('/dashboard');
+      }
+    },
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await registerUser({
-        variables: {
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        },
-      });
-      // Store the token
-      localStorage.setItem('token', data.registerUser.token);
-      localStorage.setItem('userId', data.loginUser.user._id);
-      localStorage.setItem('username', data.registerUser.user.username);
-      // Redirect to the dashboard
-      navigate('/dashboard');
-    } catch (err) {
-      console.error('Registration error:', err);
-    }
+    setErrorMsg('');
+    await registerUser({
+      variables: {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      },
+    });
   };
-  
 
   return (
     <Container className="mt-5">
@@ -49,6 +54,7 @@ function RegisterScreen() {
           <Card>
             <Card.Body>
               <h3 className="text-center mb-4">Register</h3>
+              {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="registerUsername" className="mb-3">
                   <Form.Label>Username</Form.Label>
@@ -61,7 +67,6 @@ function RegisterScreen() {
                     required
                   />
                 </Form.Group>
-
                 <Form.Group controlId="registerEmail" className="mb-3">
                   <Form.Label>Email</Form.Label>
                   <Form.Control
@@ -73,7 +78,6 @@ function RegisterScreen() {
                     required
                   />
                 </Form.Group>
-
                 <Form.Group controlId="registerPassword" className="mb-3">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
@@ -85,14 +89,6 @@ function RegisterScreen() {
                     required
                   />
                 </Form.Group>
-
-                {/* Show any registration error */}
-                {error && (
-                  <div className="text-danger mb-2">
-                    {error.message}
-                  </div>
-                )}
-
                 <Button
                   variant="primary"
                   type="submit"
@@ -102,10 +98,8 @@ function RegisterScreen() {
                   {loading ? 'Registering...' : 'Register'}
                 </Button>
               </Form>
-
               <div className="text-center mt-3">
-                Already have an account?{' '}
-                <Link to="/login">Login</Link>
+                Already have an account? <Link to="/login">Login</Link>
               </div>
             </Card.Body>
           </Card>
