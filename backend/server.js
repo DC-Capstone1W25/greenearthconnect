@@ -19,9 +19,22 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Configure CORS
+// If your frontend is at a specific domain, replace '*' with that domain
+const corsOptions = {
+  origin: '*', // e.g., 'https://your-frontend-domain.com'
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false, // set to true if you need cookies or other credentials
+};
+
+// Apply CORS to all routes
+app.use(cors(corsOptions));
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions));
+
 // Middleware to parse JSON bodies
 app.use(express.json());
-app.use(cors());
 
 // Connect to MongoDB
 connectDB();
@@ -46,7 +59,7 @@ app.use(
 
     return {
       schema,
-      graphiql: true,
+      graphiql: true, // set to false in production if desired
       context: { user },
     };
   })
