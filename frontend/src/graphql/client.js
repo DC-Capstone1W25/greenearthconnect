@@ -2,9 +2,10 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-// 1. Define the GraphQL endpoint 
+// 1. Define the GraphQL endpoint using an environment variable,
+//    falling back to a relative URL if not provided.
 const httpLink = createHttpLink({
-  uri: 'http://localhost:5000/graphql',
+  uri: process.env.REACT_APP_GRAPHQL_URI || '/graphql',
 });
 
 // 2. Middleware to attach the JWT token in headers
