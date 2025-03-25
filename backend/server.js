@@ -31,8 +31,6 @@ app.use(
   '/graphql',
   graphqlHTTP((req) => {
     let token = req.headers.authorization || '';
-
-    // Remove "Bearer " if present
     if (token.startsWith('Bearer ')) {
       token = token.slice(7).trim();
     }
@@ -40,7 +38,6 @@ app.use(
     let user = null;
     if (token) {
       try {
-        // Decode token using the secret from .env
         user = jwt.verify(token, process.env.JWT_SECRET);
       } catch (err) {
         console.error('Invalid token:', err.message);
@@ -49,8 +46,8 @@ app.use(
 
     return {
       schema,
-      graphiql: true, // Enables GraphiQL interface
-      context: { user }, // Attach user to context for resolvers
+      graphiql: true,
+      context: { user },
     };
   })
 );
@@ -61,10 +58,10 @@ app.use('/api/chat', chatRoutes);
 // Mount the AQI prediction endpoint at /api/aqi
 app.use('/api/aqi', aqiRoutes);
 
-// Serve static files from the frontend build folder
+// Serve static files from the React build folder (from frontend)
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
 
-// Catch-all route to serve index.html for React Router
+// Catch-all route to serve index.html (for React Router)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'frontend', 'build', 'index.html'));
 });
