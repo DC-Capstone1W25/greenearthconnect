@@ -49,19 +49,19 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// Base GraphQL endpoint
+// Base GraphQL endpoint from env variable (or fallback to localhost)
 const httpLink = new HttpLink({
   uri: process.env.REACT_APP_GRAPHQL_URI || `http://localhost:${port}/graphql`,
 });
 
-
-// Create a single Apollo Client instance
+// Create Apollo Client instance
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: from([errorLink, authLink, httpLink]),
 });
 
 function App() {
+  // Chat modal state (for floating chat interaction)
   const [showChatModal, setShowChatModal] = useState(false);
   const toggleChatModal = () => setShowChatModal((prev) => !prev);
 
@@ -80,7 +80,6 @@ function App() {
                 <Route path="/register" element={<RegisterScreen />} />
                 <Route path="/login" element={<LoginScreen />} />
                 <Route path="/profile" element={<ProfileScreen />} />
-                {/* Catch-all for 404 */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Container>
