@@ -11,7 +11,7 @@ function Chatbot({ aqiTrendData }) {
   const [darkMode, setDarkMode] = useState(document.body.classList.contains('dark-mode'));
   const messagesEndRef = useRef(null);
 
-  // Monitor changes to document.body's class list to update darkMode state
+  // Update dark mode state if document.body's classes change
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setDarkMode(document.body.classList.contains('dark-mode'));
@@ -20,7 +20,7 @@ function Chatbot({ aqiTrendData }) {
     return () => observer.disconnect();
   }, []);
 
-  // Auto-scroll to the bottom when messages update
+  // Auto-scroll to bottom when messages update
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -31,7 +31,7 @@ function Chatbot({ aqiTrendData }) {
     const trimmedMessage = inputMessage.trim();
     if (!trimmedMessage) return;
 
-    // Append user's message to the conversation log
+    // Append the user's message
     setMessages(prev => [
       ...prev,
       { sender: 'user', text: trimmedMessage, timestamp: new Date() }
@@ -39,7 +39,8 @@ function Chatbot({ aqiTrendData }) {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/chat', { message: trimmedMessage });
+      // Use a relative URL instead of hardcoding "http://localhost:5000"
+      const response = await axios.post('/api/chat', { message: trimmedMessage });
       const reply = response.data.reply;
       setMessages(prev => [
         ...prev,
@@ -62,7 +63,7 @@ function Chatbot({ aqiTrendData }) {
     if (!loading) sendMessage();
   };
 
-  // Render message bubbles with conditional dark mode styling
+  // Render messages with dark mode styling
   const renderMessage = (msg, idx) => {
     const isUser = msg.sender === 'user';
     return (
@@ -92,7 +93,7 @@ function Chatbot({ aqiTrendData }) {
     );
   };
 
-  // Define colors based on dark mode for the card components
+  // Define colors for card and input based on dark mode
   const cardBg = darkMode ? 'dark' : 'light';
   const cardText = darkMode ? 'light' : 'dark';
   const cardBodyBg = darkMode ? '#343a40' : '#f8f9fa';

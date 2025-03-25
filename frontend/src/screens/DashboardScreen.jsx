@@ -73,7 +73,8 @@ export default function DashboardScreen() {
   const handlePredict = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get('http://localhost:5000/api/aqi/predict', {
+      // Use a relative URL so that it works in production and local environments.
+      const { data } = await axios.get('/api/aqi/predict', {
         params: {
           temperature,
           humidity,
