@@ -1,4 +1,4 @@
-# Use a Python base image that also allows installation of Node.js
+# Python base image that also allows installation of Node.js
 FROM python:3.10-slim
 
 # Install system dependencies and Node.js (using Node 18)
@@ -14,25 +14,24 @@ RUN apt-get update && apt-get install -y \
 # Set the working directory
 WORKDIR /app
 
-# Copy the entire repository into the container
+# Copy the entire repository into the container (minus what’s excluded by .dockerignore)
 COPY . .
 
-# Install all dependencies using the root package.json (workspaces)
+#  Python requirements.txt for backend:
+RUN pip install --no-cache-dir -r backend/requirements.txt
+
+# Install all Node dependencies at the root package.json)
 RUN npm install --legacy-peer-deps
 
 # Build the frontend
 WORKDIR /app/frontend
 RUN npm run build
 
-# (Optional) If you need to copy the frontend build into the backend folder so your server can serve it,
-# you can uncomment the next line. Alternatively, ensure your backend's server.js knows to serve files from /app/frontend/build.
-# RUN cp -R build ../backend/build
-
-# Install backend Node dependencies (this may be already done via workspaces, but to be safe)
+# Return to the backend folder and install dependencies again if needed
 WORKDIR /app/backend
 RUN npm install --legacy-peer-deps
 
-# Expose the port your backend uses (assumed to be 5000)
+# Expose the port your backend uses
 EXPOSE 5000
 
 # Start the backend server
