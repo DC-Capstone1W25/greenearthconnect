@@ -2,13 +2,19 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-// 1. Define the GraphQL endpoint using an environment variable,
-//    falling back to a relative URL if not provided.
+// Use environment variable for the GraphQL URI; fallback to a relative path
+const graphqlUri = process.env.REACT_APP_GRAPHQL_URI || '/graphql';
+console.log('Using GraphQL endpoint:', graphqlUri);
+
+// Create an HTTP link with optional credentials (adjust if needed)
 const httpLink = createHttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_URI || '/graphql',
+  uri: graphqlUri,
+  fetchOptions: {
+    credentials: 'include', // include cookies if required; remove if not needed
+  },
 });
 
-// 2. Middleware to attach the JWT token in headers
+// Middleware to attach JWT token from localStorage
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
   return {
@@ -19,7 +25,7 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// 3. Create Apollo Client
+// Create Apollo Client instance
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
