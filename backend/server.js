@@ -20,9 +20,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Configure CORS
-// If your frontend is at a specific domain, replace '*' with that domain
 const corsOptions = {
-  origin: '*', // e.g., 'https://your-frontend-domain.com'
+  origin: '*', // 'https://greenearthconnect-2.onrender.com',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: false, // set to true if you need cookies or other credentials
@@ -59,7 +58,7 @@ app.use(
 
     return {
       schema,
-      graphiql: true, // set to false in production if desired
+      graphiql: true, // set to false in production
       context: { user },
     };
   })

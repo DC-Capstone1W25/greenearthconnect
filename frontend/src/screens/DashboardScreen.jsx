@@ -29,11 +29,11 @@ function getAQIColor(aqi) {
 }
 
 // Decide base URL for the AQI endpoint
-// 1) If REACT_APP_API_BASE_URL is set, use it
+// 1) If REACT_APP_GRAPHQL_URI is set, use it
 // 2) If in dev mode, use http://localhost:5000
 // 3) Otherwise, use empty string (so it uses a relative path in production)
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-const baseURL = process.env.REACT_APP_API_BASE_URL || (isDev ? 'http://localhost:5000' : '');
+const baseURL = process.env.REACT_APP_GRAPHQL_URI || (isDev ? 'http://localhost:5000' : '');
 
 export default function DashboardScreen() {
   // Username from localStorage
