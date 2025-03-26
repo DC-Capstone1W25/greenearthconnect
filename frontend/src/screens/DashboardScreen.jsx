@@ -32,8 +32,9 @@ function getAQIColor(aqi) {
 // 1) If REACT_APP_GRAPHQL_URI is set, use it
 // 2) If in dev mode, use http://localhost:5000
 // 3) Otherwise, use empty string (so it uses a relative path in production)
+// Decide base URL for the backend
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-const baseURL = process.env.REACT_APP_GRAPHQL_URI || (isDev ? 'http://localhost:5000' : '');
+const baseURL = process.env.REACT_APP_BACKEND_URL || (isDev ? 'http://localhost:5000' : '');
 
 export default function DashboardScreen() {
   // Username from localStorage
@@ -84,15 +85,9 @@ export default function DashboardScreen() {
   const handlePredict = async () => {
     setLoading(true);
     try {
-      // Construct the full URL using baseURL + /api/aqi/predict
       const endpoint = `${baseURL}/api/aqi/predict`;
       const { data } = await axios.get(endpoint, {
-        params: {
-          temperature,
-          humidity,
-          wind_speed: windSpeed,
-          precipitation,
-        },
+        params: { temperature, humidity, wind_speed: windSpeed, precipitation },
       });
       setPrediction(data);
     } catch (error) {
