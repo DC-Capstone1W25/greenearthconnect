@@ -24,7 +24,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import Chatbot from './components/Chatbot';
 import './index.css';
 
-const port = process.env.PORT || 5000;
+//const port = process.env.PORT || 5000;
 
 // Handle GraphQL & network errors
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -51,7 +51,7 @@ const authLink = setContext((_, { headers }) => {
 
 // Base GraphQL endpoint from env variable (or fallback to localhost)
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_URI || `http://localhost:${port}/graphql`,
+  uri: process.env.REACT_APP_GRAPHQL_URI, // || `http://localhost:${port}/graphql`,
 });
 
 // Create Apollo Client instance

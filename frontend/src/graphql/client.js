@@ -2,19 +2,19 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-// 1. Detect if we're in development mode
-const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
-
-// 2. If REACT_APP_GRAPHQL_URI is set, use it. Otherwise, if we're in dev, use localhost:5000.
-//    In production (if no env var is set), fallback to a relative URL /graphql.
-const graphqlUri = process.env.REACT_APP_GRAPHQL_URI
-  || (isDev ? 'http://localhost:5000/graphql' : '/graphql');
+// For local dev: fallback to http://localhost:5000/graphql
+// For production: if REACT_APP_GRAPHQL_URI is not set, fallback to /graphql
+const isDev = process.env.NODE_ENV !== 'production';
+const graphqlUri =
+  process.env.REACT_APP_GRAPHQL_URI ||
+  (isDev ? 'http://localhost:5000/graphql' : '/graphql');
 
 console.log('Using GraphQL endpoint:', graphqlUri);
+console.log('NODE_ENV:', process.env.NODE_ENV);
 
 const httpLink = createHttpLink({
   uri: graphqlUri,
-  // If you need credentials (cookies), uncomment:
+  // If you need cookies, uncomment:
   // fetchOptions: { credentials: 'include' },
 });
 
