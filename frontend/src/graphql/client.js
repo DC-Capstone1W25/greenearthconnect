@@ -4,11 +4,10 @@ import { setContext } from '@apollo/client/link/context';
 
 const isDev = process.env.NODE_ENV !== 'production';
 const baseURL = process.env.REACT_APP_BACKEND_URL || (isDev ? 'http://localhost:5000' : '');
-const graphqlUri = `${baseURL}/graphql`;
+const httpLink = createHttpLink({ uri: `${baseUrl}/graphql` });
 
 console.log('Using GraphQL endpoint:', graphqlUri);
 
-const httpLink = createHttpLink({ uri: graphqlUri });
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
