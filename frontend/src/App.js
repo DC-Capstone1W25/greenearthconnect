@@ -29,9 +29,10 @@ const isDev = process.env.NODE_ENV !== 'production';
 
 // 2) If REACT_APP_BACKEND_URL is set, use it. Otherwise, if dev, use localhost:5000/graphql.
 //    In production with no env var, default to /graphql (same domain).
-const graphqlUri =
-  process.env.REACT_APP_BACKEND_URL ||
-  (isDev ? 'http://localhost:5000/graphql' : '/graphql');
+const graphqlUri = process.env.REACT_APP_BACKEND_URL
+  ? `${process.env.REACT_APP_BACKEND_URL}/graphql`
+  : (isDev ? 'http://localhost:5000/graphql' : '/graphql');
+
 
 console.log('Using GraphQL endpoint:', graphqlUri);
 console.log('NODE_ENV:', process.env.NODE_ENV);
