@@ -39,7 +39,6 @@ function Chatbot({ aqiTrendData }) {
     setLoading(true);
 
     try {
-      // Use a relative URL instead of hardcoding "http://localhost:5000"
       const response = await axios.post('/api/chat', { message: trimmedMessage });
       const reply = response.data.reply;
       setMessages(prev => [
