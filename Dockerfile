@@ -2,10 +2,10 @@
 FROM python:3.10-slim
 
 # Declare build args for environment variables you need at build time
-ARG REACT_APP_GRAPHQL_URI
+ARG REACT_APP_BACKEND_URL
 
 # Set them as ENV so that create-react-app can see them
-ENV REACT_APP_GRAPHQL_URI=$REACT_APP_GRAPHQL_URI
+ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
 
 RUN apt-get update && apt-get install -y curl gnupg build-essential \
   && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
