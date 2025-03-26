@@ -24,7 +24,17 @@ import ProfileScreen from './screens/ProfileScreen';
 import Chatbot from './components/Chatbot';
 import './index.css';
 
-//const port = process.env.PORT || 5000;
+// 1) Decide if we're in development mode
+const isDev = process.env.NODE_ENV !== 'production';
+
+// 2) If REACT_APP_BACKEND_URL is set, use it. Otherwise, if dev, use localhost:5000/graphql.
+//    In production with no env var, default to /graphql (same domain).
+const graphqlUri =
+  process.env.REACT_APP_BACKEND_URL ||
+  (isDev ? 'http://localhost:5000/graphql' : '/graphql');
+
+console.log('Using GraphQL endpoint:', graphqlUri);
+console.log('NODE_ENV:', process.env.NODE_ENV);
 
 // Handle GraphQL & network errors
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -49,9 +59,9 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// Base GraphQL endpoint from env variable (or fallback to localhost)
+// Create the HttpLink for Apollo
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_GRAPHQL_URI, // || `http://localhost:${port}/graphql`,
+  uri: graphqlUri,
 });
 
 // Create Apollo Client instance
@@ -80,6 +90,7 @@ function App() {
                 <Route path="/register" element={<RegisterScreen />} />
                 <Route path="/login" element={<LoginScreen />} />
                 <Route path="/profile" element={<ProfileScreen />} />
+                {/* Catch-all for 404 */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Container>
@@ -102,10 +113,15 @@ function App() {
             centered
             className={document.body.classList.contains("dark-mode") ? "modal-dark" : ""}
           >
-            <Modal.Header closeButton className={document.body.classList.contains("dark-mode") ? "modal-dark-header" : ""}>
+            <Modal.Header
+              closeButton
+              className={document.body.classList.contains("dark-mode") ? "modal-dark-header" : ""}
+            >
               <Modal.Title>Greenearth Connect Chatbot</Modal.Title>
             </Modal.Header>
-            <Modal.Body className={document.body.classList.contains("dark-mode") ? "modal-dark-body" : ""}>
+            <Modal.Body
+              className={document.body.classList.contains("dark-mode") ? "modal-dark-body" : ""}
+            >
               <Chatbot />
             </Modal.Body>
           </Modal>

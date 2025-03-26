@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/static/css/main.0a55094f.css",
-    "main.js": "/static/js/main.63b10671.js",
+    "main.js": "/static/js/main.9da852f2.js",
     "static/media/greeneartdconn.jpg": "/static/media/greeneartdconn.b66b9ad9af378a78786b.jpg",
     "index.html": "/index.html",
     "main.0a55094f.css.map": "/static/css/main.0a55094f.css.map",
-    "main.63b10671.js.map": "/static/js/main.63b10671.js.map"
+    "main.9da852f2.js.map": "/static/js/main.9da852f2.js.map"
   },
   "entrypoints": [
     "static/css/main.0a55094f.css",
-    "static/js/main.63b10671.js"
+    "static/js/main.9da852f2.js"
   ]
 }
