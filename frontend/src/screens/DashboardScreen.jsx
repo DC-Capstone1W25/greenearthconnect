@@ -18,7 +18,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-// Function to map AQI value to a color for the circular gauge
+// Decide color for AQI gauge
 function getAQIColor(aqi) {
   if (aqi <= 50) return '#00E400';       // Good: Green
   if (aqi <= 100) return '#FFFF00';      // Moderate: Yellow
@@ -28,8 +28,15 @@ function getAQIColor(aqi) {
   return '#7E0023';                      // Hazardous: Maroon
 }
 
+// Decide base URL for the AQI endpoint
+// 1) If REACT_APP_API_BASE_URL is set, use it
+// 2) If in dev mode, use http://localhost:5000
+// 3) Otherwise, use empty string (so it uses a relative path in production)
+const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+const baseURL = process.env.REACT_APP_API_BASE_URL || (isDev ? 'http://localhost:5000' : '');
+
 export default function DashboardScreen() {
-  // Get username from localStorage
+  // Username from localStorage
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
 
   // State for AQI Prediction inputs and output
@@ -40,17 +47,19 @@ export default function DashboardScreen() {
   const [prediction, setPrediction] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Simulated AQI trend data for visualization (last 7 days)
+  // Simulated AQI trend data (last 7 days)
   const [aqiTrendData, setAqiTrendData] = useState({
     labels: [],
-    datasets: [{
-      label: 'AQI Trend',
-      data: [],
-      borderColor: 'rgba(75, 192, 192, 1)',
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      fill: true,
-      tension: 0.4,
-    }],
+    datasets: [
+      {
+        label: 'AQI Trend',
+        data: [],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+        tension: 0.4,
+      },
+    ],
   });
 
   useEffect(() => {
@@ -59,22 +68,25 @@ export default function DashboardScreen() {
     const data = [45, 60, 55, 70, 65, 50, 80];
     setAqiTrendData({
       labels,
-      datasets: [{
-        label: 'AQI Trend',
-        data,
-        borderColor: 'rgba(75, 192, 192, 1)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
-        tension: 0.4,
-      }],
+      datasets: [
+        {
+          label: 'AQI Trend',
+          data,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: true,
+          tension: 0.4,
+        },
+      ],
     });
   }, []);
 
   const handlePredict = async () => {
     setLoading(true);
     try {
-      // Use a relative URL so that it works in production and local environments.
-      const { data } = await axios.get('/api/aqi/predict', {
+      // Construct the full URL using baseURL + /api/aqi/predict
+      const endpoint = `${baseURL}/api/aqi/predict`;
+      const { data } = await axios.get(endpoint, {
         params: {
           temperature,
           humidity,
@@ -97,8 +109,8 @@ export default function DashboardScreen() {
         <Col>
           <h1 className="text-center">Dashboard</h1>
           <p className="text-center welcome-message">
-            {username 
-              ? `Welcome, ${username}, to your personal dashboard!` 
+            {username
+              ? `Welcome, ${username}, to your personal dashboard!`
               : 'Welcome to your personal dashboard!'}
           </p>
         </Col>
@@ -190,7 +202,8 @@ export default function DashboardScreen() {
                       <Col md={7}>
                         <h5 className="mb-3">AQI Details</h5>
                         <p>
-                          <strong>Predicted PM2.5:</strong> {prediction.predicted_pm25.toFixed(2)} µg/m³
+                          <strong>Predicted PM2.5:</strong>{' '}
+                          {prediction.predicted_pm25.toFixed(2)} µg/m³
                         </p>
                       </Col>
                     </Row>
