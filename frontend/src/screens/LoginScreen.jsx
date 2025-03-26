@@ -10,11 +10,13 @@ function LoginScreen() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errorMsg, setErrorMsg] = useState('');
 
+  // useMutation with onError / onCompleted callbacks
   const [loginUser, { loading }] = useMutation(LOGIN_USER, {
     onError: (error) => {
       setErrorMsg(error.message);
     },
     onCompleted: (data) => {
+      // Ensure data.loginUser matches the structure returned by your GraphQL mutation
       if (data && data.loginUser) {
         localStorage.setItem('token', data.loginUser.token);
         localStorage.setItem('userId', data.loginUser.user._id);
@@ -25,14 +27,17 @@ function LoginScreen() {
     },
   });
 
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Submit the login form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg(''); // Clear previous errors
+    setErrorMsg(''); // Clear any previous errors
+
     await loginUser({
       variables: {
         email: formData.email,
@@ -49,6 +54,7 @@ function LoginScreen() {
             <Card.Body>
               <h3 className="text-center mb-4">Login</h3>
               {errorMsg && <Alert variant="danger">{errorMsg}</Alert>}
+
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="email" className="mb-3">
                   <Form.Label>Email</Form.Label>
@@ -61,6 +67,7 @@ function LoginScreen() {
                     required
                   />
                 </Form.Group>
+
                 <Form.Group controlId="password" className="mb-3">
                   <Form.Label>Password</Form.Label>
                   <Form.Control
@@ -72,10 +79,17 @@ function LoginScreen() {
                     required
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="w-100"
+                  disabled={loading}
+                >
                   {loading ? 'Logging in...' : 'Login'}
                 </Button>
               </Form>
+
               <div className="text-center mt-3">
                 Don't have an account? <Link to="/register">Register</Link>
               </div>
