@@ -4,7 +4,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 
 export default function DashboardScreen() {
   return (
-    <Container fluid className="mt-4">
+    <Container className="mt-4">
       {/* Header Section */}
       <Row>
         <Col>
@@ -15,7 +15,39 @@ export default function DashboardScreen() {
         </Col>
       </Row>
 
-      {/* Example Cards Section */}
+       {/* Overview Section */}
+       <Row>
+        <Col>
+          <div id="overview">
+            <h1>Welcome to the Air Quality Predictor</h1>
+            <p>
+              Our web app is designed to provide accurate predictions of air quality, helping you stay informed about the air you breathe.
+              By leveraging advanced algorithms and real-time data, we offer insights into current and future air pollution levels.
+              Whether you're planning your day or concerned about health impacts, our app equips you with the information you need.
+              Explore interactive maps, detailed forecasts, and personalized alerts to make informed decisions.
+              Join us in our mission to promote cleaner air and healthier living environments.
+            </p>
+
+            {/* AQI Display */}
+            <div className="aqi-container">
+              <div className="aqi-box good">
+                <div className="aqi-value">50</div>
+                <div className="aqi-label">Good</div>
+              </div>
+              <div className="aqi-box moderate">
+                <div className="aqi-value">100</div>
+                <div className="aqi-label">Moderate</div>
+              </div>
+              <div className="aqi-box unhealthy">
+                <div className="aqi-value">150</div>
+                <div className="aqi-label">Unhealthy</div>
+              </div>
+            </div>
+          </div>
+        </Col>
+      </Row>
+
+       {/* Example Cards Section */}
       <Row className="mt-4">
         <Col md={4} className="mb-3">
           <Card>

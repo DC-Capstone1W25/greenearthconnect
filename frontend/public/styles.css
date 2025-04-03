@@ -1,47 +1,57 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
+    background-color: #f8f8f8;
     color: #333;
   }
   
-  #overview {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  .container {
+    padding: 30px;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
   }
   
   h1 {
-    color: #0073e6;
+    color: #333;
     text-align: center;
+    margin-bottom: 20px;
+  }
+
+.newsfeed-header {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
   }
   
-  p {
-    line-height: 1.6;
-    text-align: justify;
+  h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
   }
   
+
   /* AQI Display Styles */
   .aqi-container {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-top: 30px;
-    padding: 20px;
-    background-color: #e0f7fa;
+    margin-top: 20px;
+    background-color: #f0f0f0;
     border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
   .aqi-box {
     text-align: center;
     padding: 10px;
     border-radius: 8px;
-    width: 100px;
+    width: auto;
+    min-width: 100px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0 10px;
   }
   
   .aqi-box.good {
@@ -57,11 +67,33 @@ body {
   }
   
   .aqi-value {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
+    margin-bottom: 5px;
   }
   
   .aqi-label {
-    font-size: 14px;
+    font-size: 16px;
     color: #555;
+  }
+
+  .newsfeed-card {
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  .newsfeed-card:hover {
+    transform: translateY(-5px);
+  }
+
+.newsfeed-card:nth-of-type(1) {
+    background-color: #e0f7fa;
+  }
+.newsfeed-card:nth-of-type(2) {
+    background-color: #e8d5d5;
+  }
+.newsfeed-card:nth-of-type(3) {
+    background-color: #cff4d2;
   }
