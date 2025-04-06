@@ -1,6 +1,8 @@
 // frontend\src\screens\MapScreen.jsx
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 
 export default function MapScreen() {
   return (
@@ -8,9 +10,9 @@ export default function MapScreen() {
       {/* Header */}
       <Row>
         <Col>
-          <h1 className="text-center">Map</h1>
+          <h1 className="text-center">Air Quality Map</h1>
           <p className="text-center text-muted">
-            Explore locations and view interactive map data.
+            Explore air quality levels across various locations.
           </p>
         </Col>
       </Row>
@@ -19,20 +21,14 @@ export default function MapScreen() {
       <Row className="mt-4">
         <Col>
           <Card>
-            <Card.Body>
-              {/* Replace this div with interactive map component */}
-              <div
-                style={{
-                  height: '500px',
-                  backgroundColor: '#e9ecef',
-                  borderRadius: '5px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <h4>Interactive Map Placeholder</h4>
-              </div>
+            <Card.Body style={{ padding: 0 }}>
+              <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: '500px', width: '100%' }}>
+                {/* Base map layer */}
+                <TileLayer
+                  attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+              </MapContainer>
             </Card.Body>
           </Card>
         </Col>
