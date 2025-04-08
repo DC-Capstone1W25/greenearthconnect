@@ -12,7 +12,7 @@ const router = express.Router();
 function runPythonScript(scriptPath, args = []) {
   return new Promise((resolve, reject) => {
     let result = '';
-    const pythonProcess = spawn('python3', [scriptPath, ...args]);
+    const pythonProcess = spawn('python', [scriptPath, ...args]);
 
     pythonProcess.stdout.on('data', (data) => {
       result += data.toString();
