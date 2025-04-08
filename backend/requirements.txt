@@ -4,3 +4,7 @@ matplotlib
 seaborn
 scikit-learn
 xgboost
+feedparser
+transformers>=4.29.2
+accelerate>=0.20.0
+torch

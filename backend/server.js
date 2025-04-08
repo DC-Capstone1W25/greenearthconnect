@@ -17,6 +17,7 @@ import capstoneAqiRoutes from './routes/capstoneairquality.js';
 import activityRoutes from './routes/activityRecommender.js';
 import activityRoutesV2 from './routes/activityRecommendationV2.js';
 import aqiRegressionRoutes from './routes/aqiRegression.js';
+import newsRoutes from './routes/newsfeed.js';
 
 // Workaround to obtain __dirname in ES modules:
 const __filename = fileURLToPath(import.meta.url);
@@ -70,6 +71,7 @@ app.use('/api/aqi/capstone', capstoneAqiRoutes);
 app.use('/api/activity', activityRoutes);
 app.use('/api/activity/v2', activityRoutesV2);
 app.use('/api/aqiRegress', aqiRegressionRoutes);
+app.use('/api/newsfeed', newsRoutes);
 
 // Serve static files from the React build folder
 app.use(express.static(path.join(__dirname, '..', 'frontend', 'build')));
