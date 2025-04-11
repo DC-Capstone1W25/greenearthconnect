@@ -12,13 +12,15 @@ const router = express.Router();
 function runPythonScript(scriptPath, args = []) {
   return new Promise((resolve, reject) => {
     let result = '';
-    const pythonProcess = spawn('python', [scriptPath, ...args]);
+    let errorOutput = '';
+    const pythonProcess = spawn('python3', [scriptPath, ...args]);
 
     pythonProcess.stdout.on('data', (data) => {
       result += data.toString();
     });
 
     pythonProcess.stderr.on('data', (data) => {
+      errorOutput += data.toString();
       console.error(`Python stderr: ${data.toString()}`);
     });
 
@@ -26,17 +28,21 @@ function runPythonScript(scriptPath, args = []) {
       if (code === 0) {
         resolve(result);
       } else {
-        reject(new Error(`Python script exited with code ${code}`));
+        const errorMsg = `Python script exited with code ${code}. ${errorOutput}`;
+        reject(new Error(errorMsg));
       }
     });
   });
 }
+
 
 // GET /api/newsfeed
 router.get('/', async (req, res) => {
   const scriptPath = path.join(__dirname, '..', 'scripts', 'newsfeed.py');
   try {
     const result = await runPythonScript(scriptPath);
+    console.log("Python script output:", result); // Log output for debugging
+
     const output = JSON.parse(result);
     res.json(output);
   } catch (error) {

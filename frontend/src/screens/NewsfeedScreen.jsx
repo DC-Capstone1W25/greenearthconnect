@@ -1,4 +1,4 @@
-// frontend\src\screens\NewsfeedScreen.jsx
+// frontend/src/screens/NewsfeedScreen.jsx
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Card, Button, Spinner, Alert } from 'react-bootstrap';
 import axios from 'axios';
@@ -7,19 +7,39 @@ import axios from 'axios';
 const isDev = !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
 const baseURL = process.env.REACT_APP_BACKEND_URL || (isDev ? 'http://localhost:5000' : '');
 
+// A separate component for rendering individual news articles
+const ArticleCard = ({ article }) => (
+  <Col md={4} className="mb-4">
+    <Card className="h-100 shadow-sm">
+      <Card.Body>
+        <Card.Title>{article.clickbait_headline}</Card.Title>
+        <Card.Subtitle className="mb-2 text-muted">{article.original_title}</Card.Subtitle>
+        <Card.Text>{article.summary}</Card.Text>
+        <Button 
+          variant="primary" 
+          size="sm" 
+          href={article.link} 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          Read More
+        </Button>
+      </Card.Body>
+    </Card>
+  </Col>
+);
+
 export default function NewsfeedScreen() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  // Retrieve logged in username (if any) for personalization
+  const username = localStorage.getItem('username');
 
-  // Fetch news articles from the API on component mount
   useEffect(() => {
-    console.log('Base URL:', baseURL);
-
     const fetchNews = async () => {
       try {
         const { data } = await axios.get(`${baseURL}/api/newsfeed`);
-        // Use a defensive check to ensure articles is always an array:
         setArticles(data.articles || []);
       } catch (err) {
         console.error('Error fetching newsfeed:', err);
@@ -32,7 +52,6 @@ export default function NewsfeedScreen() {
         setLoading(false);
       }
     };
-
     fetchNews();
   }, []);
 
@@ -40,10 +59,12 @@ export default function NewsfeedScreen() {
     <Container fluid className="mt-4">
       {/* Header Section */}
       <Row className="mb-4">
-        <Col>
-          <h1 className="text-center">Newsfeed</h1>
-          <p className="text-center text-muted">
-            Stay updated with the latest air quality news and insights.
+        <Col className="text-center">
+          <h1 className="screen-title">Newsfeed</h1>
+          <p className="screen-subtitle">
+            {username 
+              ? `Welcome back, ${username}! Stay updated with the latest air quality news.` 
+              : 'Stay updated with the latest air quality news and insights.'}
           </p>
         </Col>
       </Row>
@@ -72,28 +93,7 @@ export default function NewsfeedScreen() {
       {!loading && !error && (
         <Row className="mt-4">
           {articles.length > 0 ? (
-            articles.map((article, idx) => (
-              <Col key={idx} md={4} className="mb-4">
-                <Card className="h-100 shadow-sm">
-                  <Card.Body>
-                    <Card.Title>{article.clickbait_headline}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      {article.original_title}
-                    </Card.Subtitle>
-                    <Card.Text>{article.summary}</Card.Text>
-                    <Button
-                      variant="primary"
-                      size="sm"
-                      href={article.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Read More
-                    </Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))
+            articles.map((article, idx) => <ArticleCard key={idx} article={article} />)
           ) : (
             <Col>
               <Alert variant="info" className="text-center">
